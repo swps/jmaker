@@ -36,6 +36,7 @@ public class JFMTask extends Task
 		this.freemarkerConfiguration.setDirectoryForTemplateLoading( new File("templates") );
 		this.freemarkerConfiguration.setObjectWrapper(new DefaultObjectWrapper());
 		this.layoutPrefixes = new ArrayList<String>();
+		this.layoutPrefixes.add("jmaker-");
 	}
 	public void setBasePackage(String basePackage) {
 		this.basePackage = basePackage;
