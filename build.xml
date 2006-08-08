@@ -1,0 +1,153 @@
+<?xml version="1.0"?>
+<project basedir="."  default="build-api" name="jMaker">
+
+  <property name="install.location" value="../dist" />
+  <property name="basepackage" value="net.diaperrush.jmaker.fmpxmlresult" />
+  <property name="apibasepackage" value="com.abscraps.filemaker"/>
+  <property name="src" value="gensrc" />
+  <property name="docs" value="docs" />
+  <property name="classes" value="classes" />
+  <property name="dist" value="dist" />
+  <property name="fmpjar" value="${ant.project.name}.jar" />
+  <property file="../development/ant.global.properties" />
+  <property name="schemafilename" value="FmpXmlResult.xsd" />
+
+  <!-- ========================================================================= -->
+  <!-- class path for the project                                                -->
+  <!-- ========================================================================= -->
+  <path id="class.path">
+    <fileset dir="${jwsdp.home}">
+      <include name="**/*.jar" />
+      <exclude name="ant.jar" />
+    </fileset>
+    <pathelement location="." />
+    <pathelement location="${classes}" />
+  </path>
+
+	<taskdef name="xjc" classname="com.sun.tools.xjc.XJCTask">
+        <classpath refid="class.path" />
+	</taskdef>
+
+	<target name="build-api" depends="build-core" description="Introspect your FileMaker">
+	    <taskdef name="jfm" classname="net.diaperrush.jmaker.tools.ant.JFMTask" >
+	    	<classpath refid="class.path"/>
+	    </taskdef>
+		
+		<echo>
+    Generating the Custom Java API classes...
+		</echo>
+	    <jfm target="${src}" basePackage="${apibasepackage}" layoutPrefix="xml-dude" >
+    	</jfm>
+	</target>
+
+  <target name="build-core" depends="init">
+      <echo>-------------------------------------------------------</echo>
+      <echo>BUILDING FILEMAKER SCHEMAS</echo>
+      <echo>-------------------------------------------------------</echo>
+
+        <!-- generate the Java content classes from the schema -->
+        <echo message="Generating the JaxB classes .." />
+        <xjc  schema="${schemafilename}" target="${src}" package="${basepackage}" >
+        	<depends dir="." >
+                    <include name="${schemafilename}"/>
+        	</depends>
+        	<produces dir="${src}"/>
+        </xjc>
+
+        <echo message="Compiling the JaxB java source files..." />
+        <javac srcdir="${src}" destdir="${classes}" debug="true">
+          <classpath refid="class.path" />
+        </javac>
+  	<!--
+    <copy todir=".">
+      <fileset dir="${src}">
+        <include name="**/*.properties" />
+        <include name="**/bgm.ser" />
+      </fileset>
+    </copy>
+    -->
+    <copy todir="${classes}">
+      <fileset dir="${src}">
+        <include name="**/*.properties" />
+        <include name="**/bgm.ser" />
+      </fileset>
+    </copy>
+      
+      <echo>-------------------------------------------------------</echo>
+      <echo>FINISHED BUILDING FILEMAKER SCHEMAS</echo>
+      <echo>-------------------------------------------------------</echo>
+
+   	  <echo>-------------------------------------------------------</echo>
+      <echo>BUILDING jMAKER UTILITY CLASSES</echo>
+      <echo>-------------------------------------------------------</echo>
+
+    <javac srcdir="src" destdir="${classes}" debug="true">
+      <classpath refid="class.path" />
+    </javac>
+  </target>
+	
+  <!-- ========================================================================= -->
+  <!-- Creates the docs                                                          -->
+  <!-- ========================================================================= -->
+  <target name="docs" description="Create api docs">
+    <javadoc packagenames="${basepackage}" sourcepath="${src}" destdir="${docs}" classpathref="class.path" author="true" version="true" windowTitle="&lt;H2> ${name} API Documentation &lt;/H2>">
+    </javadoc>
+  </target>
+
+  <!-- ========================================================================= -->
+  <!-- creates the jar file with all its necessary stuff.                        -->
+  <!-- ========================================================================= -->
+  <target name="dist-api" depends="check-dist" description="generate dist" unless="noUpdateNeeded">
+    <antcall target="build" />
+    <jar jarfile="${dist}/${fmpjar}">
+      <fileset dir=".">
+        <include name="**/*.properties" />
+        <include name="**/bgm.ser" />
+      </fileset>
+      <fileset dir="${classes}">
+        <include name="**/*.*" />
+      </fileset>
+    </jar>
+  </target>
+
+  <!-- ========================================================================= -->
+  <!-- cleans all the class files, docs and dist stuff                           -->
+  <!-- ========================================================================= -->
+  <target name="clean" description="Cleans the project">
+    <delete dir="${src}" failonerror="false" />
+    <delete dir="${docs}" failonerror="false" />
+    <delete includeemptydirs="true"  failonerror="false">
+      <fileset dir="${classes}" includes="**/*" />
+    </delete>
+    <delete includeemptydirs="true"  failonerror="false">
+      <fileset dir="${dist}" includes="**/*" />
+    </delete>
+    <delete includeemptydirs="true" failonerror="false">
+      <fileset dir="net" includes="**/*" />
+    </delete>
+  </target>
+
+  <!-- ========================================================================= -->
+  <!-- checks to see if we need to run another dist on the project               -->
+  <!-- ========================================================================= -->
+  <target name="check-dist">
+    <condition property="noUpdateNeeded">
+      <and>
+        <uptodate srcfile="${ant.project.name}.xsd" targetfile="${dist}/${fmpjar}" />
+      </and>
+    </condition>
+  </target>
+
+  <!-- ========================================================================= -->
+  <!-- initializes the project                                                   -->
+  <!-- ========================================================================= -->
+  <target name="init">
+    <tstamp />
+    <mkdir dir="${src}" />
+    <mkdir dir="${classes}" />
+    <mkdir dir="${docs}" />
+    <mkdir dir="${dist}" />
+  </target>
+</project>
+
+
