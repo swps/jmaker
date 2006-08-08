@@ -13,6 +13,7 @@ public class FileMakerLayout {
 		//TODO:  come back and do this for real
 		String name = realName;
 		name = name.replaceAll("-", "_" );
+		name = name.replaceAll( "^[a-zA-Z0-9_]", "" );
 		while( name.indexOf(' ' ) > 0 )
 		{
 			name = name.replace( ' ', '_');

@@ -9,8 +9,9 @@
   <property name="classes" value="classes" />
   <property name="dist" value="dist" />
   <property name="fmpjar" value="${ant.project.name}.jar" />
-  <property file="../development/ant.global.properties" />
   <property name="schemafilename" value="FmpXmlResult.xsd" />
+  <property name="lib.dir" value="lib" />
+  <property name="jwsdp.home" value="${lib.dir}" />
 
   <!-- ========================================================================= -->
   <!-- class path for the project                                                -->
@@ -33,9 +34,9 @@
 	    	<classpath refid="class.path"/>
 	    </taskdef>
 		
-		<echo>
-    Generating the Custom Java API classes...
-		</echo>
+	      <echo>-------------------------------------------------------</echo>
+	      <echo>Generating the Custom Java API classes...</echo>
+	      <echo>-------------------------------------------------------</echo>
 	    <jfm target="${src}" basePackage="${apibasepackage}" layoutPrefix="xml-dude" >
     	</jfm>
 	</target>
@@ -58,14 +59,6 @@
         <javac srcdir="${src}" destdir="${classes}" debug="true">
           <classpath refid="class.path" />
         </javac>
-  	<!--
-    <copy todir=".">
-      <fileset dir="${src}">
-        <include name="**/*.properties" />
-        <include name="**/bgm.ser" />
-      </fileset>
-    </copy>
-    -->
     <copy todir="${classes}">
       <fileset dir="${src}">
         <include name="**/*.properties" />
@@ -97,13 +90,8 @@
   <!-- ========================================================================= -->
   <!-- creates the jar file with all its necessary stuff.                        -->
   <!-- ========================================================================= -->
-  <target name="dist-api" depends="check-dist" description="generate dist" unless="noUpdateNeeded">
-    <antcall target="build" />
+  <target name="dist-api" depends="build-api,check-dist" description="generate dist" unless="noUpdateNeeded">
     <jar jarfile="${dist}/${fmpjar}">
-      <fileset dir=".">
-        <include name="**/*.properties" />
-        <include name="**/bgm.ser" />
-      </fileset>
       <fileset dir="${classes}">
         <include name="**/*.*" />
       </fileset>
