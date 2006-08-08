@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:tns="http://www.filemaker.com/fmpxmlresult" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://www.filemaker.com/fmpxmlresult" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="FMPXMLRESULT">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element name="ERRORCODE" type="xs:integer" />
+        <xs:element name="PRODUCT">
+          <xs:complexType>
+            <xs:attribute name="BUILD" type="xs:string" use="required" />
+            <xs:attribute name="NAME" type="xs:string" use="required" />
+            <xs:attribute name="VERSION" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DATABASE">
+          <xs:complexType>
+            <xs:attribute name="DATEFORMAT" type="xs:string" use="required" />
+            <xs:attribute name="LAYOUT" type="xs:string" use="required" />
+            <xs:attribute name="NAME" type="xs:string" use="required" />
+            <xs:attribute name="RECORDS" type="xs:integer" use="required" />
+            <xs:attribute name="TIMEFORMAT" type="xs:string" use="required" />
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="METADATA">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element maxOccurs="unbounded" name="FIELD">
+                <xs:complexType>
+                  <xs:attribute name="EMPTYOK" type="xs:string" use="required" />
+                  <xs:attribute name="MAXREPEAT" type="xs:integer" use="required" />
+                  <xs:attribute name="NAME" type="xs:string" use="required" />
+                  <xs:attribute name="TYPE" type="xs:string" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="RESULTSET">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element minOccurs="0" maxOccurs="unbounded" name="ROW">
+                <xs:complexType>
+                  <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="COL">
+                      <xs:complexType>
+                        <xs:sequence>
+                          <xs:element minOccurs="0" maxOccurs="1" name="DATA" type="xs:string" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="MODID" type="xs:integer" use="required" />
+                  <xs:attribute name="RECORDID" type="xs:integer" use="required" />
+                </xs:complexType>
+              </xs:element>
+            </xs:sequence>
+            <xs:attribute name="FOUND" type="xs:integer" use="required" />
+          </xs:complexType>
+        </xs:element>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
