@@ -39,6 +39,12 @@
 	      <echo>-------------------------------------------------------</echo>
 	    <jfm target="${src}" basePackage="${apibasepackage}" layoutPrefix="xml-dude">
     	</jfm>
+	      <echo>-------------------------------------------------------</echo>
+	      <echo>Compiling the Custom Java API classes...</echo>
+	      <echo>-------------------------------------------------------</echo>
+        <javac srcdir="${src}" destdir="${classes}" debug="true">
+          <classpath refid="class.path" />
+        </javac>
 	</target>
 
   <target name="build-core" depends="init">

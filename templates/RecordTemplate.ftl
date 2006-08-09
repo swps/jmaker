@@ -15,7 +15,7 @@ package ${basePackageName};
 import net.diaperrush.jmaker.layouts.FileMakerRecord;
 import net.diaperrush.jmaker.schemas.FmpXmlResult;
 
-public class ${layout.newClassName}
+public class ${layout.newClassName}Record
 {
   public enum Layout
   {
@@ -45,7 +45,7 @@ public class ${layout.newClassName}
 
   private FileMakerRecord fmRecord;
 
-  public ${layout.newClassName}(FmpXmlResult fmResult, int resultRow)
+  public ${layout.newClassName}Record(FmpXmlResult fmResult, int resultRow)
   {
     this.fmRecord = new FileMakerRecord(fmResult, resultRow);
   }

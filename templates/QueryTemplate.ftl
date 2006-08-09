@@ -10,50 +10,23 @@
 -->
 package ${basePackageName}.queries;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import net.diaperrush.jmaker.FileMakerServerConfiguration;
 import net.diaperrush.jmaker.layouts.AbstractFileMakerQuery;
 import net.diaperrush.jmaker.schemas.FmpXmlResult;
 
-import ${basePackageName}.${layout.newClassName};
+import ${basePackageName}.${layout.newClassName}Record;
 
-public class ${layout.newClassName}Query  extends AbstractFileMakerQuery
+public class ${layout.newClassName}Query  extends AbstractFileMakerQuery<${layout.newClassName}Record>
 {
   public ${layout.newClassName}Query( FileMakerServerConfiguration fmServer )
   {
-    super(fmServer, ${layout.newClassName}.Layout.getDatabaseName(), ${layout.newClassName}.Layout.getName() );
+    super(fmServer, ${layout.newClassName}Record.Layout.getDatabaseName(), ${layout.newClassName}Record.Layout.getName() );
   }
 
-  public List<${layout.newClassName}> find()
+  @Override
+  protected ${layout.newClassName}Record createRecord( FmpXmlResult xmlResult, int recNum )
   {
-      FmpXmlResult xmlResult = this.fmFind();
-      List<${layout.newClassName}> result = new ArrayList<${layout.newClassName}>();
-      for( int i = 0; i < xmlResult.size(); i++ )
-      {
-          result.add( new ${layout.newClassName}( xmlResult, i ) );
-      }
-      
-      return result;
-  }
-  
-  public ${layout.newClassName} edit( int recNum )
-  {
-      FmpXmlResult xmlResult = this.fmEdit( recNum );
-      return new ${layout.newClassName}( xmlResult, 0 );
-  }
-  
-  public List<${layout.newClassName}> findany()
-  {
-      FmpXmlResult xmlResult = this.fmFindall();
-      List<${layout.newClassName}> result = new ArrayList<${layout.newClassName}>();
-      for( int i = 0; i < xmlResult.size(); i++ )
-      {
-          result.add( new ${layout.newClassName}( xmlResult, i ) );
-      }
-      
-      return result;
+      return new ${layout.newClassName}Record( xmlResult, recNum );
   }
 
 <#list layout.fields as field><#if field.javaType?exists>
@@ -61,7 +34,7 @@ public class ${layout.newClassName}Query  extends AbstractFileMakerQuery
   {
     String value = "";
     if( ${field.setter} != null ) value = ${field.setter}.toString();
-    this.addEntry( ${layout.newClassName}.Layout.${field.enumName}.fmName(), value );
+    this.addEntry( ${layout.newClassName}Record.Layout.${field.enumName}.fmName(), value );
   }
 </#if></#list>
 
