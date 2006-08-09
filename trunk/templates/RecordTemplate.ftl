@@ -12,7 +12,7 @@
 -->
 package ${basePackageName};
 
-import net.diaperrush.jmaker.layouts.FileMakerResult;
+import net.diaperrush.jmaker.layouts.FileMakerRecord;
 import net.diaperrush.jmaker.schemas.FmpXmlResult;
 
 public class ${layout.newClassName}
@@ -43,23 +43,23 @@ public class ${layout.newClassName}
     }
   }
 
-  private FileMakerResult fmResult;
+  private FileMakerRecord fmRecord;
 
   public ${layout.newClassName}(FmpXmlResult fmResult, int resultRow)
   {
-    this.fmResult = new FileMakerResult(fmResult, resultRow);
+    this.fmRecord = new FileMakerRecord(fmResult, resultRow);
   }
 
 <#list layout.fields as field><#if field.javaType?exists>
   public ${field.javaType} get${field.getter}()
   {
-    return this.fmResult.columnAs${field.javaType}(Layout.${field.enumName}.fmName());
+    return this.fmRecord.columnAs${field.javaType}(Layout.${field.enumName}.fmName());
   }
 
 </#if></#list>
 
   public Integer getFileMakerRecNum()
   {
-    return this.fmResult.getFilemakerRecordId();
+    return this.fmRecord.getFilemakerRecordId();
   }
 }
