@@ -141,7 +141,7 @@ public class JFMTask extends Task
 
 		File entityFileFolder = new File( this.target + File.separator + folder + File.separator  );
 		File queryFileFolder = new File( this.target + File.separator + folder + File.separator + "queries" + File.separator );
-		File entityFile = new File( this.target + File.separator + folder + File.separator + layout.getNewClassName()  + ".java" );
+		File entityFile = new File( this.target + File.separator + folder + File.separator + layout.getNewClassName()  + "Record.java" );
 		File queryFile = new File( this.target + File.separator + folder + File.separator + "queries" + File.separator + layout.getNewClassName() + "Query.java" );
 			
 		entityFileFolder.mkdirs();

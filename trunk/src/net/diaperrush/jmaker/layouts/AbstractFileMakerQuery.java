@@ -13,7 +13,7 @@ import net.diaperrush.jmaker.utils.ImmutablePair;
 
 import org.apache.log4j.Logger;
 
-public abstract class AbstractFileMakerQuery implements FileMakerParameterizable
+public abstract class AbstractFileMakerQuery<T> implements FileMakerParameterizable
 {
   @SuppressWarnings("unused")
   private static final Logger logger = Logger.getLogger(AbstractFileMakerQuery.class);
@@ -34,6 +34,8 @@ public abstract class AbstractFileMakerQuery implements FileMakerParameterizable
     this.addEntry( FmpXmlResultRequest.URL_PARM_DB, fmDbName );
     this.addEntry( FmpXmlResultRequest.URL_PARM_LAYOUT, layoutName );
   }
+  
+  abstract protected T createRecord( FmpXmlResult xmlResult, int recNum );
 
   public final void addRange(Map.Entry<String, String> range)
   {
@@ -87,19 +89,35 @@ public abstract class AbstractFileMakerQuery implements FileMakerParameterizable
   }
   
   /* --------- try this on for size ---------------- */
-  protected final FmpXmlResult fmFind() throws FileMakerResponseException
+  public final List<T> find()
   {
-	  return this.fmRequest.find();
+      FmpXmlResult xmlResult = this.fmRequest.find();;
+      List<T> result = new ArrayList<T>();
+      for( int i = 0; i < xmlResult.size (); i++ )
+      {
+          result.add( this.createRecord( xmlResult, i ) );
+      }
+     
+      return result;
   }
-  
-  protected final FmpXmlResult fmFindall() throws FileMakerResponseException
+ 
+  public final T edit( int recNum )
   {
-	  return this.fmRequest.findall();
+      FmpXmlResult xmlResult = this.fmRequest.edit (recNum);
+      return this.createRecord( xmlResult, 0 );
   }
-  
-  protected final FmpXmlResult fmEdit( int recnum ) throws FileMakerResponseException
+ 
+  public final List<T> findall()
   {
-	  return this.fmRequest.edit(recnum);
+      FmpXmlResult xmlResult = this.fmRequest.findall();
+      List<T> result = new ArrayList<T>();
+      for( int i = 0; i < xmlResult.size(); i++ )
+      {
+          result.add( this.createRecord( xmlResult, i ) );
+      }
+     
+      return result;
   }
+
   
 }
