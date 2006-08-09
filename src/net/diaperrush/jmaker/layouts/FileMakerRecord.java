@@ -5,15 +5,15 @@ import net.diaperrush.jmaker.schemas.FmpXmlResult;
 import org.apache.log4j.Logger;
 
 
-public class FileMakerResult
+public class FileMakerRecord
 {
   @SuppressWarnings("unused")
-  private static final Logger logger = Logger.getLogger(FileMakerResult.class);
+  private static final Logger logger = Logger.getLogger(FileMakerRecord.class);
 
   private FmpXmlResult fmResult;
   private int resultRow;
   
-  public FileMakerResult( FmpXmlResult fmResult, int resultRow )
+  public FileMakerRecord( FmpXmlResult fmResult, int resultRow )
   {
     this.fmResult = fmResult;
     this.resultRow = resultRow;

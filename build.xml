@@ -37,7 +37,7 @@
 	      <echo>-------------------------------------------------------</echo>
 	      <echo>Generating the Custom Java API classes...</echo>
 	      <echo>-------------------------------------------------------</echo>
-	    <jfm target="${src}" basePackage="${apibasepackage}" layoutPrefix="xml-dude" >
+	    <jfm target="${src}" basePackage="${apibasepackage}" layoutPrefix="xml-dude">
     	</jfm>
 	</target>
 

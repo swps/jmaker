@@ -130,7 +130,7 @@ public class JFMTask extends Task
 
 		root.put("layout", layout );
 			
-		Template entity = this.freemarkerConfiguration.getTemplate("EntityTemplate.ftl");
+		Template entity = this.freemarkerConfiguration.getTemplate("RecordTemplate.ftl");
 		Template query = this.freemarkerConfiguration.getTemplate("QueryTemplate.ftl");
 			
 		String folder = extendedPackageName;

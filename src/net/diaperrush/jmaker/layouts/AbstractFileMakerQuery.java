@@ -5,7 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 import net.diaperrush.jmaker.FileMakerParameterizable;
+import net.diaperrush.jmaker.FileMakerResponseException;
 import net.diaperrush.jmaker.FileMakerServerConfiguration;
+import net.diaperrush.jmaker.schemas.FmpXmlResult;
 import net.diaperrush.jmaker.schemas.FmpXmlResultRequest;
 import net.diaperrush.jmaker.utils.ImmutablePair;
 
@@ -17,6 +19,7 @@ public abstract class AbstractFileMakerQuery implements FileMakerParameterizable
   private static final Logger logger = Logger.getLogger(AbstractFileMakerQuery.class);
 
   protected FileMakerServerConfiguration fmServer;
+  private FmpXmlResultRequest fmRequest;
   private List<Map.Entry<String, String>> entries;
   private List<Map.Entry<String, String>> ranges;
 
@@ -25,7 +28,9 @@ public abstract class AbstractFileMakerQuery implements FileMakerParameterizable
     this.fmServer = fmServer;
     this.entries = new ArrayList<Map.Entry<String, String>>();
     this.ranges = new ArrayList<Map.Entry<String, String>>();
-
+    this.fmRequest = new FmpXmlResultRequest( this.fmServer );
+    
+    this.fmRequest.setParameterizable( this );
     this.addEntry( FmpXmlResultRequest.URL_PARM_DB, fmDbName );
     this.addEntry( FmpXmlResultRequest.URL_PARM_LAYOUT, layoutName );
   }
@@ -80,4 +85,21 @@ public abstract class AbstractFileMakerQuery implements FileMakerParameterizable
     parms.addAll(this.ranges);
     return parms;
   }
+  
+  /* --------- try this on for size ---------------- */
+  protected final FmpXmlResult fmFind() throws FileMakerResponseException
+  {
+	  return this.fmRequest.find();
+  }
+  
+  protected final FmpXmlResult fmFindall() throws FileMakerResponseException
+  {
+	  return this.fmRequest.findall();
+  }
+  
+  protected final FmpXmlResult fmEdit( int recnum ) throws FileMakerResponseException
+  {
+	  return this.fmRequest.edit(recnum);
+  }
+  
 }
